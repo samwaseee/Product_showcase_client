@@ -9,8 +9,9 @@ const Home = () => {
   const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
-  const [products, loading, refetch] = useProducts(sort, keyword, category);
-  const [priceValue, setPriceValue] = useState([100, 500]);
+  const [priceValue, setPriceValue] = useState([100, 1500]);
+  const [products, loading, refetch] = useProducts(sort, keyword, category, brand, priceValue);
+
   const [open, setOpen] = useState(false);
 
   const handleSort = (e) => {
@@ -64,7 +65,7 @@ const Home = () => {
           </Button>
           <Drawer anchor="left" open={open} onClose={handleClose}>
             {/* Your form content goes here */}
-            <Typography sx={{ p: 2 }}>
+            <div className="grid p-2">
               {/* Add your form fields (Brand Name, Category Name, Price Range) */}
               <Box sx={{ width: 200 }}>
                 <div className="text-xl font-medium text-black flex items-center"> Cost Range Filter </div>
@@ -74,7 +75,7 @@ const Home = () => {
                   valueLabelDisplay="auto"
                   getAriaLabel={() => 'Price range'}
                   min={100}
-                  max={500}
+                  max={1500}
                   sx={{ color: '#B99D75' }}
                 />
                 <div> ${priceValue[0]} - ${priceValue[1]}</div>
@@ -84,19 +85,19 @@ const Home = () => {
                 value={brand}
                 onChange={handleBrand}>
                 <option value="" disabled>Brand</option>
-                <option value="apple">Apple</option>
-                <option value="samsung">Samsung</option>
-                <option value="oppo">Oppo</option>
+                <option value="Apple">Apple</option>
+                <option value="Samsung">Samsung</option>
+                <option value="Oppo">Oppo</option>
               </select>
 
               <select className="select select-bordered max-w-xs"
                 value={category}
                 onChange={handleCategory}>
                 <option value="" disabled>Type</option>
-                <option value="smartPhone">Smartphone</option>
-                <option value="smartWatch">SmartWatch</option>
+                <option value="Smartphone">Smartphone</option>
+                <option value="Smartwatch">SmartWatch</option>
               </select>
-            </Typography>
+            </div>
           </Drawer>
         </div>
 
