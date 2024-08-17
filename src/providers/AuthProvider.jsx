@@ -2,7 +2,6 @@
 import { createContext, useEffect, useState } from "react";
 import { GithubAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
-import axios from "axios";
 import app from "../firebase/firebase.config";
 
 export const AuthContext = createContext(null);
@@ -42,27 +41,14 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
-            const userEmail = currentUser?.email || user?.email;
-            const loggedUser = { email: userEmail }
+            // console.log('user in the auth state changed', currentUser);
             setUser(currentUser);
             setLoading(false);
-            if (currentUser) {
-                axios.post('https://booked-inn-server.vercel.app/jwt', loggedUser, { withCredentials: true })
-                    .then(res => {
-                        console.log('token response', res.data);
-                    })
-            }
-            else {
-                axios.post('https://booked-inn-server.vercel.app/logout', loggedUser, { withCredentials: true })
-                    .then(res => {
-                        console.log(res.data);
-                    })
-            }
         });
         return () => {
             unSubscribe();
         }
-    }, [user?.email])
+    }, [])
 
     const authInfo = {
         user,

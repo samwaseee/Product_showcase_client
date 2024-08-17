@@ -87,11 +87,9 @@ const Home = () => {
             <CiFilter size={30} />
           </Button>
           <Drawer anchor="left" open={open} onClose={handleClose}>
-            {/* Your form content goes here */}
-            <div className="grid p-2">
-              {/* Add your form fields (Brand Name, Category Name, Price Range) */}
-              <Box sx={{ width: 200 }}>
-                <div className="text-xl font-medium text-black flex items-center"> Cost Range Filter </div>
+            <Box sx={{ width: 250, padding: "20px", display: "grid" ,margin: "auto", gap: "30px"}}>
+              <div>
+                <div className="text-xl font-medium text-black flex items-center">Cost Range Filter</div>
                 <Slider
                   value={priceValue}
                   onChange={handleChange}
@@ -99,28 +97,25 @@ const Home = () => {
                   getAriaLabel={() => 'Price range'}
                   min={100}
                   max={1500}
-                  sx={{ color: '#B99D75' }}
                 />
                 <div> ${priceValue[0]} - ${priceValue[1]}</div>
-              </Box>
+              </div>
 
-              <select className="select select-bordered"
-                value={brand}
-                onChange={handleBrand}>
+              <p style={{fontWeight: "600"}}>Other filters</p>
+
+              <select className="select select-bordered" style={{backgroundColor: "white", border: "2px solid black"}} value={brand} onChange={handleBrand}>
                 <option value="" disabled>Brand</option>
                 <option value="Apple">Apple</option>
                 <option value="Samsung">Samsung</option>
                 <option value="Oppo">Oppo</option>
               </select>
 
-              <select className="select select-bordered max-w-xs"
-                value={category}
-                onChange={handleCategory}>
-                <option value="" disabled>Type</option>
+              <select className="select select-bordered max-w-xs" style={{backgroundColor: "white", border: "2px solid black"}} value={category} onChange={handleCategory}>
+                <option value="" disabled>Product Type</option>
                 <option value="Smartphone">Smartphone</option>
                 <option value="Smartwatch">SmartWatch</option>
               </select>
-            </div>
+            </Box>
           </Drawer>
         </div>
 
