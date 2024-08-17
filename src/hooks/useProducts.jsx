@@ -1,23 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-const useProducts = (sort, keyword, category, brand, priceValue) => {
+const useProducts = (sort, keyword, category, brand, priceValue, page, rowsPerPage) => {
 
-    const axiosInstence = axios.create({
+    const axiosInstance = axios.create({
         baseURL: 'http://localhost:5000'
-    })
+    });
 
-    const { data: products = [], isLoading: loading, refetch } = useQuery({
-        queryKey: ['products', sort, keyword, category, brand, priceValue],
+    const { data: products = { products: [], totalCount: 0 }, isLoading: loading, refetch } = useQuery({
+        queryKey: ['products', sort, keyword, category, brand, priceValue, page, rowsPerPage],
         queryFn: async () => {
-            const res = await axiosInstence.get('/products', {
-                params: { sort, keyword, category, brand, priceValue }
+            const res = await axiosInstance.get('/products', {
+                params: { sort, keyword, category, brand, priceValue, page, rowsPerPage }
             });
             return res.data;
-        }
-    })
+        },
+        keepPreviousData: true, 
+    });
 
-    return [products, loading, refetch]
+    return [products.products, products.totalCount, loading, refetch];
 };
 
 export default useProducts;

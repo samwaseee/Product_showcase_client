@@ -1,17 +1,17 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import { AuthContext } from '../providers/AuthProvider';
+import { Button } from '@mui/material';
+import { useContext, useState } from 'react';
+import { toast } from 'react-toastify';
 
 // const Search = styled('div')(({ theme }) => ({
 //   position: 'relative',
@@ -54,11 +54,27 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 // }));
 
 export default function Navbar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const { user, logOut } = useContext(AuthContext);
+
+  console.log(user)
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleSignout = () => {
+    logOut()
+      .then(() => {
+        toast.info("Signed Out ");
+        window.location.reload();
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -96,6 +112,7 @@ export default function Navbar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleSignout}> Log Out </MenuItem>
     </Menu>
   );
 
@@ -116,7 +133,7 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      {/* <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
             <MailIcon />
@@ -135,18 +152,28 @@ export default function Navbar() {
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
+        {
+          user ?
+            <>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="primary-search-account-menu"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <p>Profile</p>
+            </>
+            :
+            <Button
+              variant="outlined" href="/signin" sx={{ color: "white", borderColor: "white" }}>
+              Log In
+            </Button>
+        }
       </MenuItem>
     </Menu>
   );
@@ -174,42 +201,57 @@ export default function Navbar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
+              {/* <Badge badgeContent={4} color="error">
                 <MailIcon />
-              </Badge>
+              </Badge> */}
             </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
+              {/* <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
-              </Badge>
+              </Badge> */}
             </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {
+              user ?
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                : <Button
+                  variant="outlined" href="/signin" sx={{ color: "white", borderColor: "white" }}>
+                  Log In
+                </Button>
+            }
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
+            {
+              user ?
+                <IconButton
+                  size="large"
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+                :
+                <Button
+                  variant="outlined" href="/signin" sx={{ color: "white", borderColor: "white" }}>
+                  Log In
+                </Button>
+            }
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,8 +1,9 @@
+import * as React from 'react';
 import { useState } from "react";
 import useProducts from "../hooks/useProducts";
 import ProductCard from "../components/ProductCard";
 import { CiFilter } from "react-icons/ci";
-import { Box, Button, Drawer, Slider, Typography } from "@mui/material";
+import { Box, Button, Drawer, Slider, TablePagination } from "@mui/material";
 
 const Home = () => {
   const [sort, setSort] = useState("");
@@ -10,23 +11,37 @@ const Home = () => {
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [priceValue, setPriceValue] = useState([100, 1500]);
-  const [products, loading, refetch] = useProducts(sort, keyword, category, brand, priceValue);
-
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const [products, totalCount, loading, refetch] = useProducts(sort, keyword, category, brand, priceValue, page, rowsPerPage);
+
+
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  React.useEffect(() => {
+    refetch();
+  }, [page, rowsPerPage, sort, keyword, category, brand, priceValue, refetch]);
 
   const handleSort = (e) => {
     setSort(e.target.value);
-    refetch();
   }
 
   const handleBrand = (e) => {
     setBrand(e.target.value);
-    refetch();
   }
 
   const handleCategory = (e) => {
     setCategory(e.target.value);
-    refetch();
   }
 
   const handleSearch = (e) => {
@@ -35,7 +50,6 @@ const Home = () => {
     const searchInput = form.search.value;
 
     setKeyword(searchInput)
-    refetch();
   }
 
   const handleChange = (event, newValue) => {
@@ -110,15 +124,28 @@ const Home = () => {
           <option value="newestFirst">Newest First</option>
         </select>
       </div>
-      <div className="flex flex-wrap gap-3 mb-10">
-        {
-          products.map(product =>
+      <div className="flex flex-wrap justify-center gap-3 mb-10">
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          products.map(product => (
             <ProductCard
               key={product._id}
-              product={product} />
-          )
-        }
+              product={product}
+            />
+          ))
+        )}
       </div>
+
+      <TablePagination
+        component="div"
+        count={totalCount}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        sx={{ color: "white", textAlign: "center" }}
+      />
     </>
   );
 };
