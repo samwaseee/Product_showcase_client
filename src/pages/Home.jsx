@@ -19,6 +19,14 @@ const Home = () => {
   const [products, totalCount, loading, refetch] = useProducts(sort, keyword, category, brand, priceValue, page, rowsPerPage);
 
 
+  const SkeletonComponent = () => (
+    <div className="flex w-52 flex-col gap-4">
+      <div className="skeleton h-32 w-full"></div>
+      <div className="skeleton h-4 w-28"></div>
+      <div className="skeleton h-4 w-full"></div>
+      <div className="skeleton h-4 w-full"></div>
+    </div>
+  );
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -127,7 +135,9 @@ const Home = () => {
       </div>
       <div className="flex flex-wrap justify-center gap-3 mb-10">
         {loading ? (
-          <p>Loading...</p>
+          Array.from({ length: 10 }, (_, index) => (
+            <SkeletonComponent key={index} />
+          ))
         ) : (
           products.map(product => (
             <ProductCard
@@ -147,7 +157,7 @@ const Home = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
         sx={{ color: "white", textAlign: "center" }}
       />
-      <Footer/>
+      <Footer />
     </>
   );
 };
