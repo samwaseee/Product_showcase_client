@@ -4,7 +4,7 @@ import axios from 'axios';
 const useProducts = (sort, keyword, category, brand, priceValue, page, rowsPerPage) => {
 
     const axiosInstance = axios.create({
-        baseURL: 'http://localhost:5000'
+        baseURL: 'https://scic-job-task-backend.vercel.app'
     });
 
     const { data: products = { products: [], totalCount: 0 }, isLoading: loading, refetch } = useQuery({

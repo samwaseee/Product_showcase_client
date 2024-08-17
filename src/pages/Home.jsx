@@ -4,6 +4,7 @@ import useProducts from "../hooks/useProducts";
 import ProductCard from "../components/ProductCard";
 import { CiFilter } from "react-icons/ci";
 import { Box, Button, Drawer, Slider, TablePagination } from "@mui/material";
+import Footer from '../components/Footer';
 
 const Home = () => {
   const [sort, setSort] = useState("");
@@ -146,6 +147,7 @@ const Home = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
         sx={{ color: "white", textAlign: "center" }}
       />
+      <Footer/>
     </>
   );
 };
