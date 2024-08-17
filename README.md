@@ -44,7 +44,7 @@ Product Showcase is a web application that allows users to explore and interact 
 ## Setup and Installation
 1. Clone the repository to your local machine.
    ```bash
-   git clone https://github.com/username/product-showcase.git
+   git clone https://github.com/samwaseee/Product_showcase_client
    ```
 2. Navigate to the project directory.
    ```bash
