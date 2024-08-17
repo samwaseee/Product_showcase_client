@@ -61,8 +61,6 @@ Product Showcase is a web application that allows users to explore and interact 
    - `VITE_STORAGEBUCKET`: Your Firebase storage bucket.
    - `VITE_MESSAGINGSENDERID`: Your Firebase messaging sender ID.
    - `VITE_APPID`: Your Firebase app ID.
-   - `VITE_IMAGE_HOSTING_KEY`: Your image hosting service key.
-   - `VITE_PAYMENT_GATEWAY_PK`: Your payment gateway public key.
 
 5. Start the server.
    ```bash
